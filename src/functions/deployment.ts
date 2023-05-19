@@ -41,13 +41,12 @@ async function deployAutoRole(client : ShewenyClient) {
             .setStyle(ButtonStyle.Secondary)
             .setEmoji(webEmoji!.id),
         new ButtonBuilder()
-            .setCustomId("fiveM")
+            .setCustomId("fivem")
             .setLabel("FiveM")
             .setStyle(ButtonStyle.Secondary)
             .setEmoji(fiveMEmoji!.id),
     );
 
-    // check if message already exist
     const messages = await channel.messages.fetch();
     const message = messages.find((m) => m.author.id === client.user!.id && m.embeds[0]?.title === "Auto roles");
 
