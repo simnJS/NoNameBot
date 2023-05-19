@@ -2,7 +2,7 @@ import { Event } from "sheweny";
 import type { ShewenyClient } from "sheweny";
 import Logger from "../utils/Logger";
 import { checkIfGuildExist, checkIfGuildMemberExist } from "../functions/db_functions";
-import deployAutoRole from "../functions/deployment";
+import { deployAutoRole, deployRules } from "../functions/deployment";
 
 export class ReadyEvent extends Event {
   constructor(client: ShewenyClient) {
@@ -18,5 +18,6 @@ export class ReadyEvent extends Event {
     checkIfGuildExist(this.client);
     checkIfGuildMemberExist(this.client);
     deployAutoRole(this.client);
+    deployRules(this.client);
   }
 };

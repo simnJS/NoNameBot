@@ -5,7 +5,7 @@ import config from "../../config";
 
 export class ButtonComponent extends Button {
   constructor(client: ShewenyClient) {
-    super(client, ["spigot", "discord", "fivem", "web"]);
+    super(client, ["spigot", "discord", "fivem", "web", "accept"]);
   }
 
   async execute(button: ButtonInteraction) {
@@ -74,6 +74,13 @@ export class ButtonComponent extends Button {
           button.reply({ content: "You now have the role", ephemeral: true });
         }
 
+        break;
+      case "accept":
+        const acceptRole = button.guild!.roles.cache.get(
+          config.roles.acceptRules
+        );
+          GuildMember.roles.add(acceptRole!);
+          button.reply({ content: "You have accepted the rules !", ephemeral: true });
         break;
     }
   }
