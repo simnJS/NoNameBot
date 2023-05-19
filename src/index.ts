@@ -1,7 +1,7 @@
 import {ShewenyClient} from "sheweny";
 import dotenv from "dotenv";
 import config from "./config";
-import { Partials } from "discord.js";
+import { ActivityType, Partials } from "discord.js";
 
 dotenv.config();
 const client = new ShewenyClient({
@@ -9,6 +9,14 @@ const client = new ShewenyClient({
   admins: [config.general!.admins[0]],
   mode: "development",
   partials: [Partials.GuildMember, Partials.Message, Partials.Reaction, Partials.User, Partials.Channel],
+  presence: {
+    activities: [
+      {
+        name: "Watch the guild",
+        type: ActivityType.Playing,
+      },
+    ],
+  },
   managers: {
     commands: {
       directory: "./commands",
