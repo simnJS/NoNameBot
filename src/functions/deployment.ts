@@ -12,7 +12,6 @@ import {
 } from "discord.js";
 import { ShewenyClient } from "sheweny";
 import config from "../config";
-import Logger from "../utils/Logger";
 
 async function deployAutoRole(client: ShewenyClient) {
   const channel: TextChannel = client.channels.cache.get(
