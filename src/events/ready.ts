@@ -15,8 +15,7 @@ export class ReadyEvent extends Event {
 
   execute() {
     Logger.info(`${this.client.user!.tag} is logged in`)
-    checkIfGuildExist(this.client);
-    checkIfGuildMemberExist(this.client);
+    checkIfGuildExist(this.client).then(() => checkIfGuildMemberExist(this.client));
     deployAutoRole(this.client);
     deployRules(this.client);
     createCategory(this.client);
