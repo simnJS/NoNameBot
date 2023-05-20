@@ -3,6 +3,10 @@ interface ChannelsId {
     logs: string;
     rules: string;
     ofTopics: string;
+    spigotTicket: string;
+    fiveMTicket: string;
+    webTicket: string;
+    discordTicket: string;
   }
   
   interface CategoryId {
@@ -14,6 +18,10 @@ interface ChannelsId {
     webAccess: string;
     fiveMAccess: string;
     acceptRules: string;
+    discordDev : string;
+    spigotDev : string;
+    webDev : string;
+    fiveMDev : string;
   }
 
   interface Emojis {
@@ -44,6 +52,10 @@ interface ChannelsId {
       logs: "1109217097214611527",
       rules: "1097154814556786761",
       ofTopics: "1097136969915564122",
+      spigotTicket: "1108129870044737536",
+      fiveMTicket: "1108129745784283190",
+      webTicket: "1108129358075412530",
+      discordTicket: "1108890245006639186",
     },
     roles: {
       discordAccess: "1108885319966801951",
@@ -51,6 +63,10 @@ interface ChannelsId {
       webAccess: "1108885472186478623",
       fiveMAccess: "1108885413562691725",
       acceptRules: "1108883946378375278",
+      discordDev : "1108890245006639186",
+      spigotDev : "1108129191880310785",
+      webDev : "1108128963047477331",
+      fiveMDev : "1108129147580067860",
     },
     Emojis: {
       discordAccess: "1109073394667884544",

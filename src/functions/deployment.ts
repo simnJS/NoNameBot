@@ -2,11 +2,17 @@ import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  CategoryChannel,
+  ChannelType,
   EmbedBuilder,
+  PermissionFlagsBits,
+  Role,
   TextChannel,
+  GuildEmoji,
 } from "discord.js";
 import { ShewenyClient } from "sheweny";
 import config from "../config";
+import Logger from "../utils/Logger";
 
 async function deployAutoRole(client: ShewenyClient) {
   const channel: TextChannel = client.channels.cache.get(
@@ -39,22 +45,22 @@ async function deployAutoRole(client: ShewenyClient) {
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
-      .setCustomId("spigot")
+      .setCustomId("spigot-role")
       .setLabel("Spigot")
       .setStyle(ButtonStyle.Secondary)
       .setEmoji(minecraftEmoji!.id),
     new ButtonBuilder()
-      .setCustomId("discord")
+      .setCustomId("discord-role")
       .setLabel("Discord")
       .setStyle(ButtonStyle.Secondary)
       .setEmoji(discordEmoji!.id),
     new ButtonBuilder()
-      .setCustomId("web")
+      .setCustomId("web-role")
       .setLabel("Web")
       .setStyle(ButtonStyle.Secondary)
       .setEmoji(webEmoji!.id),
     new ButtonBuilder()
-      .setCustomId("fivem")
+      .setCustomId("fivem-role")
       .setLabel("FiveM")
       .setStyle(ButtonStyle.Secondary)
       .setEmoji(fiveMEmoji!.id)
@@ -78,8 +84,9 @@ async function deployRules(client: ShewenyClient) {
     config.channelsId.rules
   ) as TextChannel;
 
-
-  const offTopic = client.channels.cache.get(config.channelsId.ofTopics) as TextChannel;
+  const offTopic = client.channels.cache.get(
+    config.channelsId.ofTopics
+  ) as TextChannel;
   const embed = new EmbedBuilder()
     .setColor("#2ecc71")
     .setTitle("Rules")
@@ -118,42 +125,186 @@ async function deployRules(client: ShewenyClient) {
       
       🔹 If you are interested in our services, feel free to place an order in the appropriate channels.
       
-      🌟 Have fun and enjoy your experience in NoName ! 🌟`)
+      🌟 Have fun and enjoy your experience in NoName ! 🌟`
+    )
     .setFooter({
       text: `${config.general?.author}`,
       iconURL: client.user?.displayAvatarURL()!,
     });
 
-    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-        new ButtonBuilder()
-            .setCustomId("accept")
-            .setLabel("Accept rules")
-            .setStyle(ButtonStyle.Success)
-            .setEmoji('✅'),
-        new ButtonBuilder()
-            .setStyle(ButtonStyle.Link)
-            .setLabel("Terms of Service")
-            .setURL("https://discordapp.com/terms"),
-        new ButtonBuilder()
-            .setStyle(ButtonStyle.Link)
-            .setLabel("Community Guidelines")
-            .setURL("https://discord.com/guidelines")
-    );
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setCustomId("accept")
+      .setLabel("Accept rules")
+      .setStyle(ButtonStyle.Success)
+      .setEmoji("✅"),
+    new ButtonBuilder()
+      .setStyle(ButtonStyle.Link)
+      .setLabel("Terms of Service")
+      .setURL("https://discordapp.com/terms"),
+    new ButtonBuilder()
+      .setStyle(ButtonStyle.Link)
+      .setLabel("Community Guidelines")
+      .setURL("https://discord.com/guidelines")
+  );
 
+  const messages = await channel.messages.fetch();
+  const message = messages.find(
+    (m) => m.author.id === client.user!.id && m.embeds[0]?.title === "Rules"
+  );
 
-    const messages = await channel.messages.fetch();
-    const message = messages.find(
-        (m) =>
-            m.author.id === client.user!.id && m.embeds[0]?.title === "Rules"
-    );
-    
-    if (message) {
-        message.edit({ embeds: [embed], components: [row] });
-    }
-    else {
-        channel.send({ embeds: [embed], components: [row] });
-    }
-
+  if (message) {
+    message.edit({ embeds: [embed], components: [row] });
+  } else {
+    channel.send({ embeds: [embed], components: [row] });
+  }
 }
 
-export { deployAutoRole, deployRules };
+async function deployTicket(client: ShewenyClient, type: string) {
+  const ticketInfo: {
+    [key: string]: {
+      emoji: GuildEmoji | undefined;
+      channelId: string;
+      title: string;
+    };
+  } = {
+    Spigot: {
+      emoji: client.emojis.cache.get(config.Emojis.spigotAccess),
+      channelId: config.channelsId.spigotTicket,
+      title: "Spigot ticket"
+    },
+    FiveM: {
+      emoji: client.emojis.cache.get(config.Emojis.fiveMAccess),
+      channelId: config.channelsId.fiveMTicket,
+      title: "FiveM ticket"
+    },
+    Web: {
+      emoji: client.emojis.cache.get(config.Emojis.webAccess),
+      channelId: config.channelsId.webTicket,
+      title: "Web ticket"
+    },
+    Discord: {
+      emoji: client.emojis.cache.get(config.Emojis.discordAccess),
+      channelId: config.channelsId.discordTicket,
+      title: "Discord ticket"
+    }
+  };
+
+  const { emoji, channelId, title } = ticketInfo[type] as {
+    emoji: GuildEmoji | undefined;
+    channelId: string;
+    title: string;
+  };
+
+  const channel: TextChannel = client.channels.cache.get(
+    channelId
+  ) as TextChannel;
+
+  const embed = new EmbedBuilder()
+    .setColor("#313338")
+    .setTitle(title)
+    .setDescription(
+      `🌟 Welcome to the ${type} ticket ! 🌟
+
+      📝 **How to create a ticket:**
+      
+      🔹 Click on the button below to create a ticket.
+      
+      🔹 Select the category corresponding to your request.
+      
+      🔹 Describe your request as precisely as possible.
+      
+      🔹 Wait for a developer to contact you.
+      
+      🔹 Once your request is completed, the developer will close the ticket.
+      
+      🌟 Have fun and enjoy your experience in NoName ! 🌟`
+    )
+    .setFooter({
+      text: `${config.general?.author}`,
+      iconURL: client.user?.displayAvatarURL()!,
+    });
+
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setCustomId(type.toLowerCase())
+      .setLabel("Create a ticket")
+      .setStyle(ButtonStyle.Primary)
+      .setEmoji(emoji!.id)
+  );
+
+  const messages = await channel.messages.fetch();
+  const message = messages.find(
+    (m) =>
+      m.author.id === client.user!.id && m.embeds[0]?.title === title
+  );
+
+  if (message) {
+    message.edit({ embeds: [embed], components: [row] });
+  } else {
+    channel.send({ embeds: [embed], components: [row] });
+  }
+}
+
+
+
+
+async function createCategory(client: ShewenyClient) {
+  // get before all , all roles id in config
+  console.log(config)
+  const guild = client.guilds.cache.get(config.general!.guildId);
+  const categoryData = [
+    {
+      name: "Spigot orders",
+      devRole: config.roles.spigotDev,
+    },
+    {
+      name: "FiveM orders",
+      devRole: config.roles.fiveMDev,
+    },
+    {
+      name: "Web orders",
+      devRole: config.roles.webDev,
+    },
+    {
+      name: "Discord orders",
+      devRole: config.roles.discordDev,
+    },
+  ];
+
+  for (const category of categoryData) {
+    const existingCategory = guild?.channels.cache.find(
+      (c) => c.name === category.name && c.type === ChannelType.GuildCategory
+    ) as CategoryChannel;
+
+    const role = guild?.roles.cache.get(category.devRole) as Role;
+
+    if (!existingCategory && role) {
+      await guild?.channels.create({
+        name: category.name,
+        type: ChannelType.GuildCategory,
+        permissionOverwrites: [
+          {
+            id: guild.roles.everyone.id,
+            deny: [
+              PermissionFlagsBits.SendMessages,
+              PermissionFlagsBits.ViewChannel,
+            ],
+          },
+          {
+            id: role.id,
+            allow: [
+              PermissionFlagsBits.SendMessages,
+              PermissionFlagsBits.ViewChannel,
+            ],
+          },
+        ],
+      });
+    }
+  }
+}
+
+
+
+
+export { deployAutoRole, deployRules, createCategory, deployTicket };

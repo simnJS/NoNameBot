@@ -5,13 +5,13 @@ import config from "../../config";
 
 export class ButtonComponent extends Button {
   constructor(client: ShewenyClient) {
-    super(client, ["spigot", "discord", "fivem", "web", "accept"]);
+    super(client, ["spigot-role", "discord-role", "fivem-role", "web-role", "accept"]);
   }
 
   async execute(button: ButtonInteraction) {
     const GuildMember = button.member as GuildMember;
     switch (button.customId) {
-      case "spigot":
+      case "spigot-role":
         const spigotRole = button.guild!.roles.cache.get(
           config.roles.spigotAccess
         );
@@ -27,7 +27,7 @@ export class ButtonComponent extends Button {
           button.reply({ content: "You now have the role", ephemeral: true });
         }
         break;
-      case "discord":
+      case "discord-role":
         const discordRole = button.guild!.roles.cache.get(
           config.roles.discordAccess
         );
@@ -44,7 +44,7 @@ export class ButtonComponent extends Button {
         }
 
         break;
-      case "fivem":
+      case "fivem-role":
         const fiveMRole = button.guild!.roles.cache.get(
           config.roles.fiveMAccess
         );
@@ -60,7 +60,7 @@ export class ButtonComponent extends Button {
           button.reply({ content: "You now have the role", ephemeral: true });
         }
         break;
-      case "web":
+      case "web-role":
         const webRole = button.guild!.roles.cache.get(config.roles.webAccess);
 
         if (GuildMember.roles.cache.has(config.roles.webAccess)) {
