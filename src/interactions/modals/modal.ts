@@ -1,6 +1,9 @@
 import { Modal } from "sheweny";
 import type { ShewenyClient } from "sheweny";
 import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
   CategoryChannel,
   ChannelType,
   EmbedBuilder,
@@ -70,7 +73,22 @@ export class ModalComponent extends Modal {
           .setDescription(`**Type:** ${fivemType}\n**Description:** ${fivemDescription}\n**Deadline:** ${fivemDeadline}\n**Rate:** ${fivemRate}`)
           .setFooter({text: `FiveM order by ${modal.user.username}`})
           .setTimestamp();
-        await fivemChannel.send({content:`<@${modal.user.id}>`,embeds: [fivemEmbed]});
+
+        const fivemRow = new ActionRowBuilder<ButtonBuilder>()
+          .addComponents(
+            new ButtonBuilder()
+              .setCustomId("fivem-finish")
+              .setLabel("Finish order")
+              .setStyle(ButtonStyle.Success)
+          )
+          .addComponents(
+            new ButtonBuilder()
+              .setCustomId("fivem-cancel")
+              .setLabel("Cancel order")
+              .setStyle(ButtonStyle.Danger)
+          );
+        
+        await fivemChannel.send({content:`<@${modal.user.id}>`,embeds: [fivemEmbed], components: [fivemRow]});
 
         await modal.reply({ content: "Your order has been sent.", ephemeral: true });
         break;
@@ -117,11 +135,24 @@ export class ModalComponent extends Modal {
           .setDescription(`**Type:** ${modal.fields.getTextInputValue("type")}\n**Description:** ${modal.fields.getTextInputValue("description")}\n**Deadline:** ${modal.fields.getTextInputValue("deadline")}\n**Rate:** ${modal.fields.getTextInputValue("rate")}`)
           .setFooter({text: `Spigot order by ${modal.user.username}`})
           .setTimestamp();
-        await spigotChannel.send({content:`<@${modal.user.id}>`,embeds: [spigotEmbed]});
+
+        const spigotRow = new ActionRowBuilder<ButtonBuilder>()
+          .addComponents(
+            new ButtonBuilder()
+              .setCustomId("spigot-finish")
+              .setLabel("Finish order")
+              .setStyle(ButtonStyle.Success)
+          )
+          .addComponents(
+            new ButtonBuilder()
+              .setCustomId("spigot-cancel")
+              .setLabel("Cancel order")
+              .setStyle(ButtonStyle.Danger)
+          );
+        await spigotChannel.send({content:`<@${modal.user.id}>`,embeds: [spigotEmbed], components: [spigotRow]});
         await modal.reply({ content: "Your order has been sent.", ephemeral: true });
         break;
       case "modal-web":
-
         const webCategory = modal.guild!.channels.cache.find(
           (c) =>
             c.name === "Web orders" && c.type === ChannelType.GuildCategory
@@ -163,19 +194,29 @@ export class ModalComponent extends Modal {
           .setDescription(`**Type:** ${modal.fields.getTextInputValue("type")}\n**Description:** ${modal.fields.getTextInputValue("description")}\n**Deadline:** ${modal.fields.getTextInputValue("deadline")}\n**Rate:** ${modal.fields.getTextInputValue("rate")}`)
           .setFooter({text: `Web order by ${modal.user.username}`})
           .setTimestamp();
-        await webChannel.send({content:`<@${modal.user.id}>`,embeds: [webEmbed]});
+
+        const webRow = new ActionRowBuilder<ButtonBuilder>()
+          .addComponents(
+            new ButtonBuilder()
+              .setCustomId("web-finish")
+              .setLabel("Finish order")
+              .setStyle(ButtonStyle.Success)
+          )
+          .addComponents(
+            new ButtonBuilder()
+              .setCustomId("web-cancel")
+              .setLabel("Cancel order")
+              .setStyle(ButtonStyle.Danger)
+          );
+        await webChannel.send({content:`<@${modal.user.id}>`,embeds: [webEmbed], components: [webRow]});
         await modal.reply({ content: "Your order has been sent.", ephemeral: true });
         break;
       case "modal-discord":
-        Logger.info("Discord order");
         const discordCategory = modal.guild!.channels.cache.find(
           (c) =>
             c.name === "Discord orders" && c.type === ChannelType.GuildCategory
         ) as CategoryChannel;
-        Logger.info(discordCategory ? "Category found" : "Category not found");
-
         if (!discordCategory) return;
-        Logger.info("Category found");
 
         const discordChannel = await modal.guild!.channels.create({
           name: `discord-${modal.user.username}`,
@@ -205,16 +246,32 @@ export class ModalComponent extends Modal {
             },
           ],
         });
-        Logger.info("Channel created" + discordChannel.name);
         const discordEmbed = new EmbedBuilder()
           .setColor("#313338")
           .setAuthor({iconURL: modal.user.displayAvatarURL(), name: modal.user.username})
           .setDescription(`**Type:** ${modal.fields.getTextInputValue("type")}\n**Description:** ${modal.fields.getTextInputValue("description")}\n**Deadline:** ${modal.fields.getTextInputValue("deadline")}\n**Rate:** ${modal.fields.getTextInputValue("rate")}`)
           .setFooter({text: `Discord order by ${modal.user.username}`})
           .setTimestamp();
-      Logger.info("Embed created");
-        await discordChannel.send({content:`<@${modal.user.id}>`,embeds: [discordEmbed]});
+
+        const discordRow = new ActionRowBuilder<ButtonBuilder>()
+          .addComponents(
+            new ButtonBuilder()
+              .setCustomId("discord-finish")
+              .setLabel("Finish order")
+              .setStyle(ButtonStyle.Success)
+          )
+          .addComponents(
+            new ButtonBuilder()
+              .setCustomId("discord-cancel")
+              .setLabel("Cancel order")
+              .setStyle(ButtonStyle.Danger)
+          );
+        await discordChannel.send({content:`<@${modal.user.id}>`,embeds: [discordEmbed], components: [discordRow]});
+        
         await modal.reply({ content: "Your order has been sent.", ephemeral: true });
+        break;
+      default:
+        console.log(modal.customId)
         break;
     }
   }

@@ -203,11 +203,11 @@ async function deployTicket(client: ShewenyClient, type: string) {
     .setColor("#313338")
     .setTitle(title)
     .setDescription(
-      `🌟 Welcome to the ${type} ticket ! 🌟
+      `🌟 Welcome to the ${type} order ! 🌟
 
-      📝 **How to create a ticket:**
+      📝 **How to create an order:**
       
-      🔹 Click on the button below to create a ticket.
+      🔹 Click on the button below to create an order.
       
       🔹 Select the category corresponding to your request.
       
@@ -227,8 +227,8 @@ async function deployTicket(client: ShewenyClient, type: string) {
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
       .setCustomId(type.toLowerCase())
-      .setLabel("Create a ticket")
-      .setStyle(ButtonStyle.Primary)
+      .setLabel("Make an order")
+      .setStyle(ButtonStyle.Success)
       .setEmoji(emoji!.id)
   );
 
@@ -276,9 +276,8 @@ async function createCategory(client: ShewenyClient) {
       (c) => c.name === category.name && c.type === ChannelType.GuildCategory
     ) as CategoryChannel;
 
-    const role = guild?.roles.cache.get(category.devRole) as Role;
 
-    if (!existingCategory && role) {
+    if (!existingCategory) {
       await guild?.channels.create({
         name: category.name,
         type: ChannelType.GuildCategory,
@@ -286,13 +285,6 @@ async function createCategory(client: ShewenyClient) {
           {
             id: guild.roles.everyone.id,
             deny: [
-              PermissionFlagsBits.SendMessages,
-              PermissionFlagsBits.ViewChannel,
-            ],
-          },
-          {
-            id: role.id,
-            allow: [
               PermissionFlagsBits.SendMessages,
               PermissionFlagsBits.ViewChannel,
             ],

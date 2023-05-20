@@ -63,7 +63,7 @@ interface ChannelsId {
       webAccess: "1108885472186478623",
       fiveMAccess: "1108885413562691725",
       acceptRules: "1108883946378375278",
-      discordDev : "1108890245006639186",
+      discordDev : "1108883435440848936",
       spigotDev : "1108129191880310785",
       webDev : "1108128963047477331",
       fiveMDev : "1108129147580067860",
