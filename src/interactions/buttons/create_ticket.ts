@@ -26,7 +26,6 @@ export class Ticket extends Button {
           .setPlaceholder(
             "Type of service ( script creation, server creation, script modification, etc... )"
           )
-          .setMinLength(3)
           .setMaxLength(100)
           .setStyle(TextInputStyle.Short)
           .setRequired(true)
@@ -35,7 +34,6 @@ export class Ticket extends Button {
         const description = new TextInputBuilder()
           .setCustomId("description")
           .setPlaceholder("Description of your request")
-          .setMinLength(3)
           .setStyle(TextInputStyle.Paragraph)
           .setRequired(true)
           .setLabel("Description of your request");
@@ -43,7 +41,6 @@ export class Ticket extends Button {
         const deadline = new TextInputBuilder()
           .setCustomId("deadline")
           .setPlaceholder("Exemple : 10/10/2021")
-          .setMinLength(3)
           .setStyle(TextInputStyle.Short)
           .setRequired(true)
           .setLabel("Deadline of your request");
@@ -51,7 +48,6 @@ export class Ticket extends Button {
         const rate = new TextInputBuilder()
           .setCustomId("rate")
           .setPlaceholder("Exemple : 200€")
-          .setMinLength(3)
           .setStyle(TextInputStyle.Short)
           .setRequired(true)
           .setLabel("Rate of your request");
@@ -92,7 +88,6 @@ export class Ticket extends Button {
           .setPlaceholder(
             "Type of service ( plugin creation, plugin modification, etc... )"
           )
-          .setMinLength(3)
           .setMaxLength(100)
           .setStyle(TextInputStyle.Short)
           .setRequired(true)
@@ -101,7 +96,6 @@ export class Ticket extends Button {
         const descriptionSpigot = new TextInputBuilder()
           .setCustomId("description")
           .setPlaceholder("Description of your request")
-          .setMinLength(3)
           .setStyle(TextInputStyle.Paragraph)
           .setRequired(true)
           .setLabel("Description of your request");
@@ -109,7 +103,6 @@ export class Ticket extends Button {
         const deadlineSpigot = new TextInputBuilder()
           .setCustomId("deadline")
           .setPlaceholder("Exemple : 10/10/2021")
-          .setMinLength(3)
           .setStyle(TextInputStyle.Short)
           .setRequired(true)
           .setLabel("Deadline of your request");
@@ -117,7 +110,6 @@ export class Ticket extends Button {
         const rateSpigot = new TextInputBuilder()
           .setCustomId("rate")
           .setPlaceholder("Exemple : 200€")
-          .setMinLength(3)
           .setStyle(TextInputStyle.Short)
           .setRequired(true)
           .setLabel("Rate of your request");
@@ -156,7 +148,6 @@ export class Ticket extends Button {
         const typeWeb = new TextInputBuilder()
           .setCustomId("type")
           .setPlaceholder("Type of service ( website creation, etc... )")
-          .setMinLength(3)
           .setMaxLength(100)
           .setStyle(TextInputStyle.Short)
           .setRequired(true)
@@ -165,7 +156,6 @@ export class Ticket extends Button {
         const descriptionWeb = new TextInputBuilder()
           .setCustomId("description")
           .setPlaceholder("Description of your request")
-          .setMinLength(3)
           .setStyle(TextInputStyle.Paragraph)
           .setRequired(true)
           .setLabel("Description of your request");
@@ -173,15 +163,12 @@ export class Ticket extends Button {
         const deadlineWeb = new TextInputBuilder()
           .setCustomId("deadline")
           .setPlaceholder("Exemple : 10/10/2021")
-
-          .setMinLength(3)
           .setStyle(TextInputStyle.Short)
           .setRequired(true)
           .setLabel("Deadline of your request");
 
         const rateWeb = new TextInputBuilder()
           .setCustomId("rate")
-          .setMinLength(3)
           .setStyle(TextInputStyle.Short)
           .setRequired(true)
           .setLabel("Rate of your request")
@@ -221,7 +208,6 @@ export class Ticket extends Button {
         const typeDiscord = new TextInputBuilder()
           .setCustomId("type")
           .setPlaceholder("Type of service ( bot creation, etc... )")
-          .setMinLength(3)
           .setMaxLength(100)
           .setStyle(TextInputStyle.Short)
           .setRequired(true)
@@ -230,14 +216,12 @@ export class Ticket extends Button {
         const descriptionDiscord = new TextInputBuilder()
           .setCustomId("description")
           .setPlaceholder("Description of your request")
-          .setMinLength(3)
           .setStyle(TextInputStyle.Paragraph)
           .setRequired(true)
           .setLabel("Description of your request");
 
         const deadlineDiscord = new TextInputBuilder()
           .setCustomId("deadline")
-          .setMinLength(3)
           .setStyle(TextInputStyle.Short)
           .setRequired(true)
           .setLabel("Deadline of your request")
@@ -245,7 +229,6 @@ export class Ticket extends Button {
 
         const rateDiscord = new TextInputBuilder()
           .setCustomId("rate")
-          .setMinLength(3)
           .setStyle(TextInputStyle.Short)
           .setRequired(true)
           .setLabel("Rate of your request")
@@ -286,7 +269,6 @@ export class Ticket extends Button {
         const ageRecruitment = new TextInputBuilder()
           .setCustomId("age")
           .setPlaceholder("Exemple : 18")
-          .setMinLength(1)
           .setMaxLength(2)
           .setStyle(TextInputStyle.Short)
           .setRequired(true)
@@ -295,7 +277,6 @@ export class Ticket extends Button {
         const aboutYouRecruitment = new TextInputBuilder()
           .setCustomId("about")
           .setPlaceholder("Tell us about you")
-          .setMinLength(3)
           .setStyle(TextInputStyle.Paragraph)
           .setRequired(true)
           .setLabel("About you");
@@ -303,7 +284,6 @@ export class Ticket extends Button {
         const whyYouRecruitment = new TextInputBuilder()
           .setCustomId("why")
           .setPlaceholder("Why do you want to join us ?")
-          .setMinLength(3)
           .setStyle(TextInputStyle.Paragraph)
           .setRequired(true)
           .setLabel("Why do you want to join us ?");

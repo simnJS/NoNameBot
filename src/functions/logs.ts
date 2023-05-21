@@ -18,7 +18,7 @@ async function sendSanctionsLog(client: ShewenyClient, sanction: string, guild: 
       embed.setColor("#e74c3c");
       break;
     case "warning":
-      embed.setColor("#f1c40f");
+      embed.setColor("#e67e22");
       break;
     case "success":
       embed.setColor("#2ecc71");
