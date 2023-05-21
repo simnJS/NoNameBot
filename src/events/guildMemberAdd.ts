@@ -1,7 +1,7 @@
-import { GuildMember } from "discord.js";
-import { Event } from "sheweny";
-import type { ShewenyClient } from "sheweny";
-import  {createDbGuildMember } from "../functions/db_functions";
+import {GuildMember} from "discord.js";
+import type {ShewenyClient} from "sheweny";
+import {Event} from "sheweny";
+import {createDbGuildMember} from "../functions/db_functions";
 
 export class guildMemberAdd extends Event {
   constructor(client: ShewenyClient) {
@@ -11,7 +11,7 @@ export class guildMemberAdd extends Event {
     });
   }
 
-  execute(member : GuildMember) {
+  execute(member: GuildMember) {
     createDbGuildMember(member, member.guild);
   }
 }

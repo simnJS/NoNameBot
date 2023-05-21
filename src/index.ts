@@ -1,7 +1,7 @@
 import {ShewenyClient} from "sheweny";
 import dotenv from "dotenv";
 import config from "./config";
-import { ActivityType, Partials } from "discord.js";
+import {ActivityType, Partials} from "discord.js";
 
 dotenv.config();
 const client = new ShewenyClient({

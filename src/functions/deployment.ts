@@ -5,11 +5,11 @@ import {
   CategoryChannel,
   ChannelType,
   EmbedBuilder,
+  GuildEmoji,
   PermissionFlagsBits,
   TextChannel,
-  GuildEmoji,
 } from "discord.js";
-import { ShewenyClient } from "sheweny";
+import {ShewenyClient} from "sheweny";
 import config from "../config";
 
 async function deployAutoRole(client: ShewenyClient) {
@@ -71,9 +71,9 @@ async function deployAutoRole(client: ShewenyClient) {
   );
 
   if (message) {
-    message.edit({ embeds: [embed], components: [row] });
+    message.edit({embeds: [embed], components: [row]});
   } else {
-    channel.send({ embeds: [embed], components: [row] });
+    channel.send({embeds: [embed], components: [row]});
   }
 }
 
@@ -152,9 +152,9 @@ async function deployRules(client: ShewenyClient) {
   );
 
   if (message) {
-    message.edit({ embeds: [embed], components: [row] });
+    message.edit({embeds: [embed], components: [row]});
   } else {
-    channel.send({ embeds: [embed], components: [row] });
+    channel.send({embeds: [embed], components: [row]});
   }
 }
 
@@ -169,26 +169,26 @@ async function deployTicket(client: ShewenyClient, type: string) {
     Spigot: {
       emoji: client.emojis.cache.get(config.Emojis.spigotAccess),
       channelId: config.channelsId.spigotTicket,
-      title: "Spigot ticket"
+      title: "Spigot ticket",
     },
     FiveM: {
       emoji: client.emojis.cache.get(config.Emojis.fiveMAccess),
       channelId: config.channelsId.fiveMTicket,
-      title: "FiveM ticket"
+      title: "FiveM ticket",
     },
     Web: {
       emoji: client.emojis.cache.get(config.Emojis.webAccess),
       channelId: config.channelsId.webTicket,
-      title: "Web ticket"
+      title: "Web ticket",
     },
     Discord: {
       emoji: client.emojis.cache.get(config.Emojis.discordAccess),
       channelId: config.channelsId.discordTicket,
-      title: "Discord ticket"
-    }
+      title: "Discord ticket",
+    },
   };
 
-  const { emoji, channelId, title } = ticketInfo[type] as {
+  const {emoji, channelId, title} = ticketInfo[type] as {
     emoji: GuildEmoji | undefined;
     channelId: string;
     title: string;
@@ -233,23 +233,17 @@ async function deployTicket(client: ShewenyClient, type: string) {
 
   const messages = await channel.messages.fetch();
   const message = messages.find(
-    (m) =>
-      m.author.id === client.user!.id && m.embeds[0]?.title === title
+    (m) => m.author.id === client.user!.id && m.embeds[0]?.title === title
   );
 
   if (message) {
-    message.edit({ embeds: [embed], components: [row] });
+    message.edit({embeds: [embed], components: [row]});
   } else {
-    channel.send({ embeds: [embed], components: [row] });
+    channel.send({embeds: [embed], components: [row]});
   }
 }
 
-
-
-
 async function createCategory(client: ShewenyClient) {
-  // get before all , all roles id in config
-  console.log(config)
   const guild = client.guilds.cache.get(config.general!.guildId);
   const categoryData = [
     {
@@ -271,14 +265,13 @@ async function createCategory(client: ShewenyClient) {
     {
       name: "Applications",
       devRole: config.roles.recruitment,
-    }
+    },
   ];
 
   for (const category of categoryData) {
     const existingCategory = guild?.channels.cache.find(
       (c) => c.name === category.name && c.type === ChannelType.GuildCategory
     ) as CategoryChannel;
-
 
     if (!existingCategory) {
       await guild?.channels.create({
@@ -304,10 +297,10 @@ async function deployRecruitmentMessage(client: ShewenyClient) {
   ) as TextChannel;
 
   const embed = new EmbedBuilder()
-  .setColor("#313338")
-  .setTitle("Recruitment")
-  .setDescription(
-    `🌟 Welcome to the recruitment channel! 🌟
+    .setColor("#313338")
+    .setTitle("Recruitment")
+    .setDescription(
+      `🌟 Welcome to the recruitment channel! 🌟
 
     📝 **How to apply:**
     
@@ -336,12 +329,11 @@ async function deployRecruitmentMessage(client: ShewenyClient) {
     🔸 Familiarity with our community and its rules.
     
     🌟 Have fun and enjoy your experience in NoName! 🌟`
-  )
-  .setFooter({
-    text: `${config.general?.author}`,
-    iconURL: client.user?.displayAvatarURL()!,
-  });
-
+    )
+    .setFooter({
+      text: `${config.general?.author}`,
+      iconURL: client.user?.displayAvatarURL()!,
+    });
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
@@ -353,18 +345,21 @@ async function deployRecruitmentMessage(client: ShewenyClient) {
 
   const messages = await channel.messages.fetch();
   const message = messages.find(
-    (m) => m.author.id === client.user!.id && m.embeds[0]?.title === "Recruitment"
+    (m) =>
+      m.author.id === client.user!.id && m.embeds[0]?.title === "Recruitment"
   );
 
   if (message) {
-    message.edit({ embeds: [embed], components: [row] });
+    message.edit({embeds: [embed], components: [row]});
   } else {
-    channel.send({ embeds: [embed], components: [row] });
+    channel.send({embeds: [embed], components: [row]});
   }
-  
 }
 
-
-
-
-export { deployAutoRole, deployRules, createCategory, deployTicket, deployRecruitmentMessage };
+export {
+  deployAutoRole,
+  deployRules,
+  createCategory,
+  deployTicket,
+  deployRecruitmentMessage,
+};

@@ -1,13 +1,7 @@
-import { Button } from "sheweny";
-import type { ShewenyClient } from "sheweny";
-import {
-  ButtonInteraction,
-  TextChannel,
-  AttachmentBuilder,
-  GuildMember,
-  Attachment,
-} from "discord.js";
-import { sendSanctionsLog, ticketCloseLogs } from "../../functions/logs";
+import type {ShewenyClient} from "sheweny";
+import {Button} from "sheweny";
+import {AttachmentBuilder, ButtonInteraction, GuildMember, TextChannel,} from "discord.js";
+import {ticketCloseLogs} from "../../functions/logs";
 
 export class OnTicketButtons extends Button {
   constructor(client: ShewenyClient) {
@@ -24,7 +18,7 @@ export class OnTicketButtons extends Button {
   }
 
   async execute(button: ButtonInteraction) {
-    const { customId, channel, member } = button;
+    const {customId, channel, member} = button;
 
     let replyContent = "";
 
@@ -51,7 +45,7 @@ export class OnTicketButtons extends Button {
       });
     }
     if (channel instanceof TextChannel) {
-      const messages = await channel.messages.fetch({ limit: 100 });
+      const messages = await channel.messages.fetch({limit: 100});
       const transcript = messages
         .sort((a, b) => a.createdTimestamp - b.createdTimestamp)
         .map(

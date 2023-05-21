@@ -1,5 +1,5 @@
-import { Button } from "sheweny";
-import type { ShewenyClient } from "sheweny";
+import type {ShewenyClient} from "sheweny";
+import {Button} from "sheweny";
 import {
   ActionRowBuilder,
   ButtonInteraction,
@@ -81,10 +81,6 @@ export class Ticket extends Button {
         );
 
         await button.showModal(modal);
-        await button.reply({
-          content: "Please fill the modal",
-          ephemeral: true,
-        });
         break;
       case "spigot":
         const modalSpigot = new ModalBuilder()
@@ -151,10 +147,6 @@ export class Ticket extends Button {
         );
 
         await button.showModal(modalSpigot);
-        await button.reply({
-          content: "Please fill the modal",
-          ephemeral: true,
-        });
         break;
       case "web":
         const modalWeb = new ModalBuilder()
@@ -220,10 +212,6 @@ export class Ticket extends Button {
         );
 
         await button.showModal(modalWeb);
-        await button.reply({
-          content: "Please fill the modal",
-          ephemeral: true,
-        });
         break;
       case "discord":
         const modalDiscord = new ModalBuilder()
@@ -288,13 +276,9 @@ export class Ticket extends Button {
         );
 
         await button.showModal(modalDiscord);
-        await button.reply({
-          content: "Please fill the modal",
-          ephemeral: true,
-        });
 
         break;
-        case "recruitment":
+      case "recruitment":
         const modalRecruitment = new ModalBuilder()
           .setTitle("Please fill out the following form")
           .setCustomId("modal-recruitment");
@@ -344,10 +328,6 @@ export class Ticket extends Button {
         );
 
         await button.showModal(modalRecruitment);
-        await button.reply({
-          content: "Please fill the modal",
-          ephemeral: true,
-        });
         break;
     }
   }

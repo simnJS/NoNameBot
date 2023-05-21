@@ -1,8 +1,14 @@
-import { Event } from "sheweny";
-import type { ShewenyClient } from "sheweny";
+import type {ShewenyClient} from "sheweny";
+import {Event} from "sheweny";
 import Logger from "../utils/Logger";
-import { checkIfGuildExist, checkIfGuildMemberExist } from "../functions/db_functions";
-import { createCategory, deployAutoRole, deployRecruitmentMessage, deployRules, deployTicket } from "../functions/deployment";
+import {checkIfGuildExist, checkIfGuildMemberExist} from "../functions/db_functions";
+import {
+  createCategory,
+  deployAutoRole,
+  deployRecruitmentMessage,
+  deployRules,
+  deployTicket
+} from "../functions/deployment";
 
 export class ReadyEvent extends Event {
   constructor(client: ShewenyClient) {

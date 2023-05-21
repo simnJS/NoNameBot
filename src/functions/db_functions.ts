@@ -1,6 +1,6 @@
-import { GuildMember, Guild } from "discord.js";
+import {Guild, GuildMember} from "discord.js";
 import prisma_instance from "../utils/prisma_instance";
-import { ShewenyClient } from "sheweny";
+import {ShewenyClient} from "sheweny";
 import Logger from "../utils/Logger";
 
 async function createDbGuildMember(guildMember: GuildMember, guild: Guild) {
@@ -75,9 +75,40 @@ async function checkIfGuildMemberExist(client: ShewenyClient) {
   }
 }
 
+async function createDbOrders(member: GuildMember, title: string, description: string, price: number, isPaid: boolean) {
+  const dbMember = await prisma_instance.guildMember.findFirst({
+    where: {
+      discordId: member.id,
+    },
+  });
+
+  if (!dbMember) return;
+
+  await prisma_instance.guildMember
+    .update({
+      where: { id: dbMember.id },
+      data: {
+        commands: {
+          create: {
+            title: title,
+            description: description,
+            price: price,
+            isPaid: isPaid,
+            date: new Date(),
+          },
+        },
+      },
+      include: {
+        commands: true,
+      },
+    });
+  Logger.info(`New order added to the database: ${title}(${member.id})`);
+}
+
 export {
   createDbGuildMember,
   createDbGuild,
   checkIfGuildExist,
   checkIfGuildMemberExist,
+  createDbOrders,
 };

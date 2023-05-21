@@ -1,5 +1,5 @@
-import { Modal } from "sheweny";
-import type { ShewenyClient } from "sheweny";
+import type {ShewenyClient} from "sheweny";
+import {Modal} from "sheweny";
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -7,12 +7,14 @@ import {
   CategoryChannel,
   ChannelType,
   EmbedBuilder,
+  GuildMember,
   ModalSubmitInteraction,
   PermissionFlagsBits,
   TextChannel,
 } from "discord.js";
 import config from "../../config";
-import  Logger from "../../utils/Logger";
+import Logger from "../../utils/Logger";
+import {createDbOrders} from "../../functions/db_functions";
 
 export class ModalComponent extends Modal {
   constructor(client: ShewenyClient) {
@@ -27,13 +29,22 @@ export class ModalComponent extends Modal {
   }
 
   async execute(modal: ModalSubmitInteraction) {
+
+    function stringToNumber(string: string) {
+      if (isNaN(parseInt(string))) {
+        return 0;
+      } else {
+        return parseInt(string);
+      }
+    }
+
     switch (modal.customId) {
       case "modal-fivem":
-      Logger.info(modal.fields.getTextInputValue("type"));
-      const fivemType = modal.fields.getTextInputValue("type");
-      const fivemDescription = modal.fields.getTextInputValue("description");
-      const fivemDeadline = modal.fields.getTextInputValue("deadline");
-      const fivemRate = modal.fields.getTextInputValue("rate");
+        Logger.info(modal.fields.getTextInputValue("type"));
+        const fivemType = modal.fields.getTextInputValue("type");
+        const fivemDescription = modal.fields.getTextInputValue("description");
+        const fivemDeadline = modal.fields.getTextInputValue("deadline");
+        const fivemRate = modal.fields.getTextInputValue("rate");
 
         const fivemCategory = modal.guild!.channels.cache.find(
           (c) =>
@@ -90,10 +101,11 @@ export class ModalComponent extends Modal {
               .setLabel("Cancel order")
               .setStyle(ButtonStyle.Danger)
           );
-        
-        await fivemChannel.send({content:`<@${modal.user.id}>`,embeds: [fivemEmbed], components: [fivemRow]});
 
-        await modal.reply({ content: "Your order has been sent.", ephemeral: true });
+        await fivemChannel.send({content: `<@${modal.user.id}>`, embeds: [fivemEmbed], components: [fivemRow]});
+
+        await modal.reply({content: "Your order has been sent.", ephemeral: true});
+        createDbOrders(modal.member as GuildMember, fivemDescription, fivemDescription, stringToNumber(fivemRate), false);
         break;
       case "modal-spigot":
 
@@ -152,8 +164,8 @@ export class ModalComponent extends Modal {
               .setLabel("Cancel order")
               .setStyle(ButtonStyle.Danger)
           );
-        await spigotChannel.send({content:`<@${modal.user.id}>`,embeds: [spigotEmbed], components: [spigotRow]});
-        await modal.reply({ content: "Your order has been sent.", ephemeral: true });
+        await spigotChannel.send({content: `<@${modal.user.id}>`, embeds: [spigotEmbed], components: [spigotRow]});
+        await modal.reply({content: "Your order has been sent.", ephemeral: true});
         break;
       case "modal-web":
         const webCategory = modal.guild!.channels.cache.find(
@@ -211,8 +223,8 @@ export class ModalComponent extends Modal {
               .setLabel("Cancel order")
               .setStyle(ButtonStyle.Danger)
           );
-        await webChannel.send({content:`<@${modal.user.id}>`,embeds: [webEmbed], components: [webRow]});
-        await modal.reply({ content: "Your order has been sent.", ephemeral: true });
+        await webChannel.send({content: `<@${modal.user.id}>`, embeds: [webEmbed], components: [webRow]});
+        await modal.reply({content: "Your order has been sent.", ephemeral: true});
         break;
       case "modal-discord":
         const discordCategory = modal.guild!.channels.cache.find(
@@ -269,9 +281,9 @@ export class ModalComponent extends Modal {
               .setLabel("Cancel order")
               .setStyle(ButtonStyle.Danger)
           );
-        await discordChannel.send({content:`<@${modal.user.id}>`,embeds: [discordEmbed], components: [discordRow]});
-        
-        await modal.reply({ content: "Your order has been sent.", ephemeral: true });
+        await discordChannel.send({content: `<@${modal.user.id}>`, embeds: [discordEmbed], components: [discordRow]});
+
+        await modal.reply({content: "Your order has been sent.", ephemeral: true});
         break;
       case "modal-recruitment":
         const recruitmentCategory = modal.guild!.channels.cache.find(
@@ -328,13 +340,17 @@ export class ModalComponent extends Modal {
               .setLabel("Deny")
               .setStyle(ButtonStyle.Danger)
           );
-        await recruitmentChannel.send({content:`<@${modal.user.id}>`,embeds: [recruitmentEmbed], components: [recruitmentRow]});
+        await recruitmentChannel.send({
+          content: `<@${modal.user.id}>`,
+          embeds: [recruitmentEmbed],
+          components: [recruitmentRow]
+        });
 
-        await modal.reply({ content: "Your application has been sent.", ephemeral: true });
+        await modal.reply({content: "Your application has been sent.", ephemeral: true});
         break;
       case "recruitment-deny":
         const reason = modal.fields.getTextInputValue("recruitment-deny")
-        
+
         const channel = modal.channel as TextChannel;
 
         const embed = new EmbedBuilder()
@@ -351,9 +367,9 @@ export class ModalComponent extends Modal {
               .setLabel("Close application")
               .setStyle(ButtonStyle.Danger)
           );
-        await channel.send({content:`<@${modal.user.id}>`,embeds: [embed], components: [row]});
+        await channel.send({content: `<@${modal.user.id}>`, embeds: [embed], components: [row]});
 
-        await modal.reply({ content: "You have succesfully denied the application.", ephemeral: true });
+        await modal.reply({content: "You have succesfully denied the application.", ephemeral: true});
         break;
     }
   }

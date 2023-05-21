@@ -1,5 +1,5 @@
-import { Button } from "sheweny";
-import type { ShewenyClient } from "sheweny";
+import type {ShewenyClient} from "sheweny";
+import {Button} from "sheweny";
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -93,9 +93,9 @@ export class className extends Button {
       recruitmentChannel.delete();
     }
     if (button.customId === "recruitment-deny") {
-        const member = button.member as GuildMember;
+      const member = button.member as GuildMember;
 
-        if (!member.permissions.has("Administrator")) return;
+      if (!member.permissions.has("Administrator")) return;
       const modal = new ModalBuilder()
         .setTitle("Deny reason")
         .setCustomId("recruitment-deny");

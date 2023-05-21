@@ -1,6 +1,6 @@
-import { Button } from "sheweny";
-import type { ShewenyClient } from "sheweny";
-import type { ButtonInteraction, GuildMember } from "discord.js";
+import type {ShewenyClient} from "sheweny";
+import {Button} from "sheweny";
+import type {ButtonInteraction, GuildMember} from "discord.js";
 import config from "../../config";
 
 export class ButtonComponent extends Button {
@@ -24,7 +24,7 @@ export class ButtonComponent extends Button {
           });
         } else {
           GuildMember.roles.add(spigotRole!);
-          button.reply({ content: "You now have the role", ephemeral: true });
+          button.reply({content: "You now have the role", ephemeral: true});
         }
         break;
       case "discord-role":
@@ -40,7 +40,7 @@ export class ButtonComponent extends Button {
           });
         } else {
           GuildMember.roles.add(discordRole!);
-          button.reply({ content: "You now have the role", ephemeral: true });
+          button.reply({content: "You now have the role", ephemeral: true});
         }
 
         break;
@@ -57,7 +57,7 @@ export class ButtonComponent extends Button {
           });
         } else {
           GuildMember.roles.add(fiveMRole!);
-          button.reply({ content: "You now have the role", ephemeral: true });
+          button.reply({content: "You now have the role", ephemeral: true});
         }
         break;
       case "web-role":
@@ -71,7 +71,7 @@ export class ButtonComponent extends Button {
           });
         } else {
           GuildMember.roles.add(webRole!);
-          button.reply({ content: "You now have the role", ephemeral: true });
+          button.reply({content: "You now have the role", ephemeral: true});
         }
 
         break;
@@ -79,8 +79,8 @@ export class ButtonComponent extends Button {
         const acceptRole = button.guild!.roles.cache.get(
           config.roles.acceptRules
         );
-          GuildMember.roles.add(acceptRole!);
-          button.reply({ content: "You have accepted the rules !", ephemeral: true });
+        GuildMember.roles.add(acceptRole!);
+        button.reply({content: "You have accepted the rules !", ephemeral: true});
         break;
     }
   }
