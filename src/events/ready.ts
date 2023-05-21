@@ -2,7 +2,7 @@ import { Event } from "sheweny";
 import type { ShewenyClient } from "sheweny";
 import Logger from "../utils/Logger";
 import { checkIfGuildExist, checkIfGuildMemberExist } from "../functions/db_functions";
-import { createCategory, deployAutoRole, deployRules, deployTicket } from "../functions/deployment";
+import { createCategory, deployAutoRole, deployRecruitmentMessage, deployRules, deployTicket } from "../functions/deployment";
 
 export class ReadyEvent extends Event {
   constructor(client: ShewenyClient) {
@@ -23,5 +23,6 @@ export class ReadyEvent extends Event {
     deployTicket(this.client, "FiveM");
     deployTicket(this.client, "Web");
     deployTicket(this.client, "Discord");
+    deployRecruitmentMessage(this.client);
   }
 };

@@ -6,7 +6,6 @@ import {
   ChannelType,
   EmbedBuilder,
   PermissionFlagsBits,
-  Role,
   TextChannel,
   GuildEmoji,
 } from "discord.js";
@@ -269,6 +268,10 @@ async function createCategory(client: ShewenyClient) {
       name: "Discord orders",
       devRole: config.roles.discordDev,
     },
+    {
+      name: "Applications",
+      devRole: config.roles.recruitment,
+    }
   ];
 
   for (const category of categoryData) {
@@ -295,7 +298,73 @@ async function createCategory(client: ShewenyClient) {
   }
 }
 
+async function deployRecruitmentMessage(client: ShewenyClient) {
+  const channel: TextChannel = client.channels.cache.get(
+    config.channelsId.recruitment
+  ) as TextChannel;
+
+  const embed = new EmbedBuilder()
+  .setColor("#313338")
+  .setTitle("Recruitment")
+  .setDescription(
+    `🌟 Welcome to the recruitment channel! 🌟
+
+    📝 **How to apply:**
+    
+    🔹 Click on the button below to create an application.
+    
+    🔹 Select the category corresponding to your request.
+    
+    🔹 Fill out the form.
+    
+    🔹 Wait for a staff member to contact you.
+    
+    🔹 Once your request is completed, the staff member will close the ticket.
+
+    📌 **Recruitment Requirements:**
+
+    🔸 Must be at least 16 years old.
+    
+    🔸 Fluent in English, both spoken and written.
+    
+    🔸 Previous experience in a similar role is preferred.
+    
+    🔸 Strong communication and teamwork skills.
+    
+    🔸 Availability to dedicate a minimum of 10 hours per week.
+    
+    🔸 Familiarity with our community and its rules.
+    
+    🌟 Have fun and enjoy your experience in NoName! 🌟`
+  )
+  .setFooter({
+    text: `${config.general?.author}`,
+    iconURL: client.user?.displayAvatarURL()!,
+  });
+
+
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setCustomId("recruitment")
+      .setLabel("Make an application")
+      .setStyle(ButtonStyle.Success)
+      .setEmoji("📝")
+  );
+
+  const messages = await channel.messages.fetch();
+  const message = messages.find(
+    (m) => m.author.id === client.user!.id && m.embeds[0]?.title === "Recruitment"
+  );
+
+  if (message) {
+    message.edit({ embeds: [embed], components: [row] });
+  } else {
+    channel.send({ embeds: [embed], components: [row] });
+  }
+  
+}
 
 
 
-export { deployAutoRole, deployRules, createCategory, deployTicket };
+
+export { deployAutoRole, deployRules, createCategory, deployTicket, deployRecruitmentMessage };

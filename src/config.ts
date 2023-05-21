@@ -7,6 +7,8 @@ interface ChannelsId {
     fiveMTicket: string;
     webTicket: string;
     discordTicket: string;
+    recruitment: string;
+    recruitmentFeedback: string;
   }
   
   interface CategoryId {
@@ -22,6 +24,7 @@ interface ChannelsId {
     spigotDev : string;
     webDev : string;
     fiveMDev : string;
+    recruitment: string;
   }
 
   interface Emojis {
@@ -56,6 +59,8 @@ interface ChannelsId {
       fiveMTicket: "1108129745784283190",
       webTicket: "1108129358075412530",
       discordTicket: "1108890245006639186",
+      recruitment: "1108130504722612335",
+      recruitmentFeedback: "1108130709819904100"
     },
     roles: {
       discordAccess: "1108885319966801951",
@@ -67,6 +72,7 @@ interface ChannelsId {
       spigotDev : "1108129191880310785",
       webDev : "1108128963047477331",
       fiveMDev : "1108129147580067860",
+      recruitment: "1108880368980992050"
     },
     Emojis: {
       discordAccess: "1109073394667884544",

@@ -9,6 +9,7 @@ import {
   EmbedBuilder,
   ModalSubmitInteraction,
   PermissionFlagsBits,
+  TextChannel,
 } from "discord.js";
 import config from "../../config";
 import  Logger from "../../utils/Logger";
@@ -20,6 +21,8 @@ export class ModalComponent extends Modal {
       "modal-spigot",
       "modal-web",
       "modal-discord",
+      "modal-recruitment",
+      "recruitment-deny",
     ]);
   }
 
@@ -270,8 +273,87 @@ export class ModalComponent extends Modal {
         
         await modal.reply({ content: "Your order has been sent.", ephemeral: true });
         break;
-      default:
-        console.log(modal.customId)
+      case "modal-recruitment":
+        const recruitmentCategory = modal.guild!.channels.cache.find(
+          (c) =>
+            c.name === "Applications" && c.type === ChannelType.GuildCategory
+        ) as CategoryChannel;
+        if (!recruitmentCategory) return;
+
+        const recruitmentChannel = await modal.guild!.channels.create({
+          name: `recruitment-${modal.user.username}`,
+          type: ChannelType.GuildText,
+          parent: recruitmentCategory,
+          permissionOverwrites: [
+            {
+              id: modal.guild!.roles.everyone.id,
+              deny: [
+                PermissionFlagsBits.SendMessages,
+                PermissionFlagsBits.ViewChannel,
+              ],
+            },
+            {
+              id: modal.user.id,
+              allow: [
+                PermissionFlagsBits.SendMessages,
+                PermissionFlagsBits.ViewChannel,
+              ],
+            },
+            {
+              id: config.roles.recruitment,
+              allow: [
+                PermissionFlagsBits.SendMessages,
+                PermissionFlagsBits.ViewChannel,
+              ],
+            },
+          ],
+        });
+        const recruitmentEmbed = new EmbedBuilder()
+          .setColor("#313338")
+          .setAuthor({iconURL: modal.user.displayAvatarURL(), name: modal.user.username})
+          .setDescription(`**Age:** ${modal.fields.getTextInputValue("age")}\n**About:** ${modal.fields.getTextInputValue("about")}\n**Why:** ${modal.fields.getTextInputValue("why")}`)
+          .setFooter({text: `Application by ${modal.user.username}`})
+          .setTimestamp();
+
+        const recruitmentRow = new ActionRowBuilder<ButtonBuilder>()
+          .addComponents(
+            new ButtonBuilder()
+              .setCustomId("recruitment-accept-staff")
+              .setLabel("Accept")
+              .setStyle(ButtonStyle.Success)
+          )
+          .addComponents(
+            new ButtonBuilder()
+              .setCustomId("recruitment-deny")
+              .setLabel("Deny")
+              .setStyle(ButtonStyle.Danger)
+          );
+        await recruitmentChannel.send({content:`<@${modal.user.id}>`,embeds: [recruitmentEmbed], components: [recruitmentRow]});
+
+        await modal.reply({ content: "Your application has been sent.", ephemeral: true });
+        break;
+      case "recruitment-deny":
+        const reason = modal.fields.getTextInputValue("recruitment-deny")
+        
+        const channel = modal.channel as TextChannel;
+
+        const embed = new EmbedBuilder()
+          .setColor("#313338")
+          .setAuthor({iconURL: modal.user.displayAvatarURL(), name: modal.user.username})
+          .setDescription(`Your application has been denied.\n**Reason:** ${reason}`)
+          .setFooter({text: `Application by ${modal.user.username}`})
+          .setTimestamp();
+
+        const row = new ActionRowBuilder<ButtonBuilder>()
+          .addComponents(
+            new ButtonBuilder()
+              .setCustomId("recruitment-deny-user")
+              .setLabel("Close application")
+              .setStyle(ButtonStyle.Danger)
+          );
+        await channel.send({content:`<@${modal.user.id}>`,embeds: [embed], components: [row]});
+
+        await modal.reply({ content: "You have succesfully denied the application.", ephemeral: true });
         break;
     }
   }

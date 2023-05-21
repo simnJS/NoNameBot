@@ -11,7 +11,7 @@ import {
 
 export class Ticket extends Button {
   constructor(client: ShewenyClient) {
-    super(client, ["fivem", "spigot", "web", "discord"]);
+    super(client, ["fivem", "spigot", "web", "discord", "recruitment"]);
   }
 
   async execute(button: ButtonInteraction) {
@@ -293,6 +293,61 @@ export class Ticket extends Button {
           ephemeral: true,
         });
 
+        break;
+        case "recruitment":
+        const modalRecruitment = new ModalBuilder()
+          .setTitle("Please fill out the following form")
+          .setCustomId("modal-recruitment");
+
+        const ageRecruitment = new TextInputBuilder()
+          .setCustomId("age")
+          .setPlaceholder("Exemple : 18")
+          .setMinLength(1)
+          .setMaxLength(2)
+          .setStyle(TextInputStyle.Short)
+          .setRequired(true)
+          .setLabel("Age");
+
+        const aboutYouRecruitment = new TextInputBuilder()
+          .setCustomId("about")
+          .setPlaceholder("Tell us about you")
+          .setMinLength(3)
+          .setStyle(TextInputStyle.Paragraph)
+          .setRequired(true)
+          .setLabel("About you");
+
+        const whyYouRecruitment = new TextInputBuilder()
+          .setCustomId("why")
+          .setPlaceholder("Why do you want to join us ?")
+          .setMinLength(3)
+          .setStyle(TextInputStyle.Paragraph)
+          .setRequired(true)
+          .setLabel("Why do you want to join us ?");
+
+        const firstActionRowRecruitment =
+          new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+            ageRecruitment
+          );
+        const secondActionRowRecruitment =
+          new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+            aboutYouRecruitment
+          );
+        const thirdActionRowRecruitment =
+          new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+            whyYouRecruitment
+          );
+
+        modalRecruitment.addComponents(
+          firstActionRowRecruitment,
+          secondActionRowRecruitment,
+          thirdActionRowRecruitment
+        );
+
+        await button.showModal(modalRecruitment);
+        await button.reply({
+          content: "Please fill the modal",
+          ephemeral: true,
+        });
         break;
     }
   }
