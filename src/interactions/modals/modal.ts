@@ -166,6 +166,7 @@ export class ModalComponent extends Modal {
           );
         await spigotChannel.send({content: `<@${modal.user.id}>`, embeds: [spigotEmbed], components: [spigotRow]});
         await modal.reply({content: "Your order has been sent.", ephemeral: true});
+        createDbOrders(modal.member as GuildMember, modal.fields.getTextInputValue("description"), modal.fields.getTextInputValue("description"), stringToNumber(modal.fields.getTextInputValue("rate")), false);
         break;
       case "modal-web":
         const webCategory = modal.guild!.channels.cache.find(
@@ -225,6 +226,7 @@ export class ModalComponent extends Modal {
           );
         await webChannel.send({content: `<@${modal.user.id}>`, embeds: [webEmbed], components: [webRow]});
         await modal.reply({content: "Your order has been sent.", ephemeral: true});
+        createDbOrders(modal.member as GuildMember, modal.fields.getTextInputValue("description"), modal.fields.getTextInputValue("description"), stringToNumber(modal.fields.getTextInputValue("rate")), false);
         break;
       case "modal-discord":
         const discordCategory = modal.guild!.channels.cache.find(
@@ -284,6 +286,7 @@ export class ModalComponent extends Modal {
         await discordChannel.send({content: `<@${modal.user.id}>`, embeds: [discordEmbed], components: [discordRow]});
 
         await modal.reply({content: "Your order has been sent.", ephemeral: true});
+        createDbOrders(modal.member as GuildMember, modal.fields.getTextInputValue("description"), modal.fields.getTextInputValue("description"), stringToNumber(modal.fields.getTextInputValue("rate")), false);
         break;
       case "modal-recruitment":
         const recruitmentCategory = modal.guild!.channels.cache.find(
