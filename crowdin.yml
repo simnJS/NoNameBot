@@ -1,0 +1,9 @@
+project_identifier: nonamebot
+files:
+  - source: /src/**
+    translation: /%two_letters_code%/%original_path%/%original_file_name%
+    languages_mapping:
+      fr: fr
+      es: es
+      de: de
+      it: it
